@@ -1,7 +1,22 @@
-version: "3.7"
+version: "3.6"
 services:
 
+  authz:
+#    network_mode: host
+    build:
+      context: .
+      dockerfile: Dockerfile-auth
+    networks:
+      envoymesh:
+        aliases:
+          - authz
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+
   front-envoy:
+#    network_mode: host
     build:
       context: .
       dockerfile: Dockerfile-frontenvoy
@@ -9,42 +24,51 @@ services:
       - ./front-envoy.yaml:/etc/front-envoy.yaml
     networks:
       - envoymesh
+#    environment:
+#      - GRPC_TRACE=all
+#      - GRPC_VERBOSITY=DEBUG
     expose:
-      - "80"
+      - "8000"
       - "8001"
     ports:
-      - "8000:80"
+      - "8000:8000"
       - "8001:8001"
 
   service1:
+#    network_mode: host
     build:
       context: .
       dockerfile: Dockerfile-service
     volumes:
-      - ./service-envoy.yaml:/etc/service-envoy.yaml
+      - ./service1-envoy.yaml:/etc/service1-envoy.yaml
     networks:
       envoymesh:
         aliases:
           - service1
     environment:
       - SERVICE_NAME=1
+      - BASE_ID=1
+      - PORT=8081
     expose:
-      - "80"
+      - "8081"
 
   service2:
+#    network_mode: host
     build:
       context: .
       dockerfile: Dockerfile-service
     volumes:
-      - ./service-envoy.yaml:/etc/service-envoy.yaml
+      - ./service2-envoy.yaml:/etc/service2-envoy.yaml
     networks:
       envoymesh:
         aliases:
           - service2
     environment:
       - SERVICE_NAME=2
+      - BASE_ID=2
+      - PORT=8082
     expose:
-      - "80"
+      - "8082"
 
 networks:
   envoymesh: {}

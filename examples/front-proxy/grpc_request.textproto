@@ -1,0 +1,25 @@
+attributes {
+  request {
+    http {
+      method: "GET"
+      scheme: "https"
+      host: "piyushn-iaptest.appspot.com"
+      headers {
+        key: "ClientId"
+        value: "fakeClientId"
+      }
+      headers {
+        key: "ClientSecret"
+        value: "fakeClientSecret"
+      }
+      headers {
+        key: "ProjectNumber"
+        value: "363174939109"
+      }
+      headers {
+        key: "GAEAppId"
+        value: "piyushn-iaptest"
+      }
+    }
+  }
+}

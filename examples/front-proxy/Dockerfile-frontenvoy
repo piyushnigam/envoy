@@ -2,4 +2,7 @@ FROM envoyproxy/envoy-dev:latest
 
 RUN apt-get update && apt-get -q install -y \
     curl
+RUN apt-get update && apt-get install -y iputils-ping
+ADD ./example-com.crt /etc/example-com.crt
+ADD ./example-com.key /etc/example-com.key
 CMD /usr/local/bin/envoy -c /etc/front-envoy.yaml --service-cluster front-proxy
